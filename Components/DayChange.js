@@ -3,11 +3,17 @@ import { View, Text, StyleSheet, TouchableHighlight, TouchableOpacity } from 're
 import { Svg, Path } from 'react-native-svg'
 
 const titleList = {
-    dailyTests: 'New Tests', totalTests: 'Total Tests',
-    dailyPositives: 'New Positives', totalPositives: 'Total Positives'
+    total_number_of_tests: 'New Tests', cumulative_number_of_tests: 'Total Tests',
+    new_positives: 'New Positives', cumulative_number_of_positives: 'Total Positives'
 }
 export default function DayChange(props) {
     title = titleList[props.dataType]
+
+    function getValue() {
+        console.log(props.dataType)
+        console.log('pos', props.data.map(d => d[props.dataType])[props.data.length - 1])
+        return props.data.map(d => d[props.dataType])[props.data.length - 1]
+    }
 
     return (
         <View style={styles.rootContainer}>
@@ -26,7 +32,7 @@ export default function DayChange(props) {
                         </Svg>
                     </View>
                     <View style={{ justifyContent: 'center', marginLeft: 15 }}>
-                        <Text style={styles.newValue}>453</Text>
+                        <Text style={styles.newValue}>{getValue()}</Text>
                     </View>
                 </View>
             </View>

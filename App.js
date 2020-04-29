@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,15 +10,30 @@ import {
 } from 'react-native';
 import CVBanner from './Components/CVBanner'
 import Map from './Components/map'
-import NYOverview from './screens/stateGeo'
+import NYOverview from './screens/NYOverview'
 import TimeGraph from './screens/timeGraph'
+// import { createStackNavigator } from 'react-navigation-stack'
+// import { createAppContainer } from 'react-navigation'
 
+// const Navigator = createStackNavigator({
+//   NYOverview: { screen: NYOverview},
+//   TimeGraph: {screen: TimeGraph}
+// })
 
 function App() {
+  
+  const [screen, setScreen] = useState('home')
+
+  if (screen == 'home') {
+    content = <NYOverview onButtonClick={() => setScreen('timeSeries')} />
+  }
+  else {
+    content = <TimeGraph onBackButtonClick={() => setScreen('home')} />
+  }
+
   return (
     <View style={styles.container}>
-      <CVBanner/>
-      <TimeGraph/>
+      {content}
     </View>
   );
 };
@@ -32,3 +47,4 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+

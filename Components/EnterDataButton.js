@@ -5,7 +5,6 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function EnterDataButton(props) {
     return (
-        <TouchableOpacity>
             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                 <View style={styles.container}>
                     <View>
@@ -15,7 +14,6 @@ export default function EnterDataButton(props) {
                     </View>
                 </View>
             </View>
-        </TouchableOpacity>
     )
 }
 

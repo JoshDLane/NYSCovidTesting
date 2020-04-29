@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { View, Text, StyleSheet, TouchableWithoutFeedbackBase } from 'react-native'
 import Svg from 'react-native-svg'
 import { Circle, Path, G } from 'react-native-svg'
@@ -8,65 +8,93 @@ import { geoMercator, geoPath } from 'd3-geo'
 export default function Map() {
     const NYgeo = require('../data/NY.json');
     const NYData = require('../data/NYCovid.json')
+    const coordinates = require('../data/coordinates')
 
     const projection = geoMercator()
     const pathBuilder = geoPath(projection);
     const buroughs = ['Bronx', 'New York', 'Queens', 'Richmond', 'Kings']
-    function findMaxDeaths(NYData) {
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    async function getNYData(region) {
+        setLoading(true)
+        var resp = await fetch(`https://health.data.ny.gov/resource/xdss-u53e.json`,
+            {
+                method: 'get',
+                headers: new Headers({
+                    "$$app_token": "weiei1vq5gb6wqtlqnvhqg1",
+                                })
+            });
+        var respJson = await (resp.json())
+
+        respJson.sort((a, b) => (a.test_date > b.test_date) ? 1 : -1)
+        recentDate = respJson.map(d => d.test_date)[respJson.length - 1]
+        var recentData = respJson.filter(function (e) {
+           return e.test_date == recentDate;
+           });
+        setData(recentData)
+        console.log('recent date', recentDate)
+        console.log('recent data', recentData)
+        setLoading(false)
+    }
+
+
+    useEffect(() => {
+        getNYData('Bronx')
+    }, []);
+
+
+    function findMaxPositives(data) {
         console.log('doing max')
-        return Math.max.apply(Math, NYData.map(function (o) { return o.deaths; }));
+        return Math.max.apply(Math, data.map(function (o) { return o.cumulative_number_of_positives; }));
     };
 
     // const MaxDeaths = (NYData) => {
     //     return Math.max.apply(Math, NYData.map(function(o) { return o.deaths; }))
     // }
-    const MaxDeaths = findMaxDeaths(NYData)
-    console.log(MaxDeaths)
+    const MaxCases = findMaxPositives(data)
+    console.log(MaxCases)
 
     function getPath(pathD) {
         return pathBuilder(pathD)
     };
 
     function circleX(county) {
-        return projection([county.Longitude, county.Latitude])[0]
+        console.log(county)
+        return projection([coordinates[county].Longitude, coordinates[county].Latitude])[0]
         console.log('drawing circle')
     }
 
     function circleY(county) {
-        return projection([county.Longitude, county.Latitude])[1]
+        return projection([coordinates[county].Longitude, coordinates[county].Latitude])[1]
     }
 
     function findOpacity(pathD) {
         var paintingCounty = pathD.properties.name;
-        if (buroughs.includes(paintingCounty)) {
-            var thisCounty = NYData.filter(function (countyData) {
-                return countyData.county == 'New York City';
-            })[0]
-            console.log('here')
-            console.log(paintingCounty)
+        // if (buroughs.includes(paintingCounty)) {
+        //     var thisCounty = NYData.filter(function (countyData) {
+        //         return countyData.county == 'New York City';
+        //     })[0]
+        //     console.log('here')
+        //     console.log(paintingCounty)
 
-        }
-        else {
-            var thisCounty = NYData.filter(function (countyData) {
-                return countyData.county == paintingCounty;
-            })[0]
-        }
+        // }
+        // else {
+        var thisCounty = data.filter(function (countyData) {
+            return countyData.county == paintingCounty;
+        })[0]
+        // }
         if (thisCounty) {
-            var normDeath = (thisCounty.deaths / MaxDeaths) + .2
-            return normDeath.toFixed(2).toString()
+            var normCases = (thisCounty.cumulative_number_of_positives / 10000)
+            return normCases.toFixed(2).toString()
         }
         else {
-            return '.1'
+            return '.01'
         }
     }
 
     function getRadius(county) {
-        if (county.county == 'New York City') {
-            return county.deaths/1500
-        }
-        else {
-        return county.deaths/350
-        }
+        return county.cumulative_number_of_positives/350
     }
 
 
@@ -113,12 +141,12 @@ export default function Map() {
                                 key={pathD} />
                     )}
                 </G>
-                <G>
-                    {NYData.map(
+                {/* <G>
+                    {data.map(
                         (CData, i) =>
                             <Circle
-                                cx={circleX(CData)}
-                                cy={circleY(CData)}
+                                cx={circleX(CData.county)}
+                                cy={circleY(CData.county)}
                                 r={getRadius(CData)}
                                 stroke='black'
                                 fill='red'
@@ -127,7 +155,7 @@ export default function Map() {
 
                             />
                     )}
-                </G>
+                </G> */}
 
             </Svg>
         </View>

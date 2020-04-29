@@ -41,9 +41,9 @@ export default class ReactiveLineGraph extends React.Component {
     };
 
     line = d3.shape.line()
-    .x(d => this.state.scaleX(new Date(d.date)))
+    .x(d => this.state.scaleX(new Date(d.test_date)))
     .y(d => this.state.scaleY(d[this.props.graphType]))
-    .curve(d3.shape.curveBasis)(this.props.data);
+    .curve(d3.shape.curveLinear)(this.props.data);
 
 
     scaleLabel = scaleQuantile().domain([0, 300]).range([0, 200, 300]);
@@ -58,10 +58,12 @@ export default class ReactiveLineGraph extends React.Component {
 
     getMinX() {
     // return TSCovid.reduce((min, b) => Math.min(min, b.date), TSCovid[0].date);
-    return this.props.data.map(d => d.date)[0];
+    console.log('min date', this.props.data.map(d => d.test_date)[0])
+    return this.props.data.map(d => d.test_date)[0];
 }
     getMaxX() {
-    return this.props.data.map(d => d.date)[this.props.data.length - 1];
+    console.log('max date', this.props.data.map(d => d.test_date)[this.props.data.length - 1])
+    return this.props.data.map(d => d.test_date)[this.props.data.length - 1];
 }
 
     properties = path.svgPathProperties(this.line);
