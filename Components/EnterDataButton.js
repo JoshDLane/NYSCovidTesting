@@ -9,7 +9,7 @@ export default function EnterDataButton(props) {
                 <View style={styles.container}>
                     <View>
                         <Text style={styles.textFormat}>
-                         Live Analytics >
+                         Details >
                     </Text>
                     </View>
                 </View>

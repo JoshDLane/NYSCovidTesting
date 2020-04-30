@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, TouchableWithoutFeedbackBase } from 'react-native'
+import { View, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native'
 import ReactiveLineGraph from '../Components/ReactiveLineGraph'
 import DayChange from '../Components/DayChange'
 import RegionSelect from '../Components/RegionSelect'
@@ -11,7 +11,7 @@ const TSCovid = require('../data/CovidTimeSeries.json')
 
 
 
-export default function TimeGraph() {
+export default function TimeGraph(props) {
     const [currGraphType, setcurrGraphType] = useState('cumulative_number_of_positives')
     const [currRegion, setCurrRegion] = useState('Albany')
     const [data, setData] = useState([])
@@ -35,21 +35,58 @@ export default function TimeGraph() {
         setLoading(false)
     }
 
-
     useEffect(() => {
         getNYData('Bronx')
     }, []);
 
+    const countyList = [
+        {
+            label: 'Kings',
+            value: 'Kings',
+        },
+        {
+            label: 'Manhattan',
+            value: 'New York'
+        }
+    ]
+    function setCounty(value) {
+        setCurrRegion(value)
+
+    }
+
+    let data2 = [{
+        value: 'Banana',
+    }, {
+        value: 'Mango',
+    }, {
+        value: 'Pear',
+    }];
+
     return (
         <View style={styles.root_container}>
-            <CVBanner />
+            <CVBanner backToHome={props.onBackButtonClick} />
             <View style={styles.container}>
                 <View>
                     <RegionSelect currentCounty={currRegion} />
                 </View>
-                <View style={{ marginTop: 25, marginRight: 15 }}>
-                    <InfectionRate />
+                <View>
+                    {/* <Dropdown
+                        label='Favorite Fruit'
+                        data={data2}
+                    />
+                    <Dropdown
+                        value={'Kings'}
+                        data={countyList}
+                        pickerStyle={{ borderBottomColor: 'white', borderWidth: 0 }}
+                        dropdownOffset={{ 'top': 0 }}
+                        containerStyle={styles.dropdown}
+                        onChangeText={(value) => {setCounty(value)}}
+                    /> */}
+
                 </View>
+                {/* <View style={{ marginTop: 25, marginRight: 15 }}>
+                    <InfectionRate />
+                </View> */}
                 <View style={styles.updatesContainer}>
                     <View style={{ marginTop: 20, marginLeft: 0 }}>
                         <TouchableOpacity onPress={() => setcurrGraphType('new_positives')}>
@@ -83,6 +120,9 @@ export default function TimeGraph() {
 
 
 const styles = StyleSheet.create({
+    dropdown: {
+        width: '80%',
+    },
     root_container: {
         width: '100%',
         height: 1000,

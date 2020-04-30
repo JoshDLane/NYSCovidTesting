@@ -9,7 +9,7 @@ export default function NYOverview(props) {
     return (
         <View style={styles.root_container}>
         <View style={styles.background}>
-            <CVBanner/>
+            <CVBanner />
             <View >
                 <UpdateStatus />
             </View>
