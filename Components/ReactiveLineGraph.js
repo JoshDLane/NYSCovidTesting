@@ -141,7 +141,7 @@ export default class ReactiveLineGraph extends React.Component {
                                 <View ref={this.cursor} style={styles.cursor} />
                             </Svg>
                             <Animated.View style={[styles.label, { transform: [{ translateX }]}]}>
-                                <TextInput style={{color: 'white', textAlign: 'center'}} ref={this.label}/>
+                                <TextInput style={{color: '#c0c0c0ff', textAlign: 'center', fontSize: 15}} ref={this.label}/>
                             </Animated.View>
                             <Animated.ScrollView
                                 style={StyleSheet.absoluteFill}

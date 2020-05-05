@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native'
 import {Svg} from 'react-native-svg'
-import InfectionRateGraphic from '../Components/InfectionRateGraphic2'
 
 export default function InfectionRate() {
     return (

@@ -3,8 +3,6 @@ import { View, Text, StyleSheet } from 'react-native'
 import Svg from 'react-native-svg'
 import { Circle, Path, G } from 'react-native-svg'
 const Pulse = require('react-native-pulse').default;
-import * as Animatable from 'react-native-animatable';
-import { PulsatingCircle } from 'react-native-pulsating-circle'
 export default function UpdateStatus(props) {
 
     //     const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -71,10 +69,6 @@ export default function UpdateStatus(props) {
                     <View style={styles.myCircle}>
                     </View>
                 </View>
-
-                {/* <Animatable.Text animation="pulse" easing="ease-out-circ" style={{color: 'red', fontSize:20}} iterationCount="infinite" style={{ textAlign: 'center' }}>•</Animatable.Text> */}
-                {/* <Bounce/> */}
-                {/* <PulsatingCircle/> */}
             </View>
             <View>
                 <Text style={styles.textstyle}>

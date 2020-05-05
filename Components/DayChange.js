@@ -50,12 +50,13 @@ export default function DayChange(props) {
 
     }
     var totcontext =
-        <View style={{ width: Dimensions.get('window').width / 2.2, padding: 5 }}>
+        <View style={[styles.buttonContainer, props.selected ? styles.selected : styles.changesTitle]}>
+
             <View>
                 <Text style={styles.changesTitle}>{title}</Text>
             </View>
             <View>
-                <View style={{ justifyContent: 'center', marginLeft: 30 }}>
+                <View style={{ justifyContent: 'center', marginLeft: 30, opacity: 1.5 }}>
                     {context}
                 </View>
             </View>
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     changesTitle: {
-        fontSize: 25,
+        fontSize: 24,
         color: colors.myGreen,
         margin: 5,
         fontWeight: '500'
@@ -91,5 +92,17 @@ const styles = StyleSheet.create({
         color: colors.myOrange,
         fontSize: 30,
         textAlign: 'center'
+    },
+    buttonContainer: {
+        width: Dimensions.get('window').width / 2.3,
+        padding: 5,
+        margin: 10,
+        borderRadius: 15,
+    },
+    selected: {
+        padding: 5,
+        margin: 10,
+        borderRadius: 15,
+        backgroundColor: 'rgba(78, 78, 78, .3)'
     }
 })

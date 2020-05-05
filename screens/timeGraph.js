@@ -12,7 +12,6 @@ import { colors } from '../styles/colors'
 import RatePositive from '../Components/RatePositive';
 import DataInfo from '../Components/DataInfo'
 import DataBanner from '../Components/DataBanner'
-const TSCovid = require('../data/CovidTimeSeries.json')
 
 
 
@@ -24,7 +23,7 @@ export default function TimeGraph(props) {
     })
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
-
+    const [selectedGraph, setSelectedGraph] = useState('cumulative_number_of_positives')
 
     async function getNYData(region) {
         setLoading(true)
@@ -113,21 +112,21 @@ export default function TimeGraph(props) {
                         <DayChange dataType='cumulative_number_of_tests' data={data} />
                     </TouchableOpacity>
                 </View> */}
-                <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
+                <View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                        <TouchableOpacity onPress={() => setcurrGraphType('new_positives')}>
-                            <DayChange dataType='new_positives' data={data} key={data} />
+                        <TouchableOpacity onPress={() => {setcurrGraphType('new_positives'), setSelectedGraph('new_positives')}}>
+                            <DayChange dataType='new_positives' data={data} key={data} selected={selectedGraph=='new_positives'}/>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setcurrGraphType('total_number_of_tests')}>
-                            <DayChange dataType='total_number_of_tests' data={data} key={data} />
+                        <TouchableOpacity onPress={() => {setcurrGraphType('total_number_of_tests'), setSelectedGraph('total_number_of_tests')}}>
+                            <DayChange dataType='total_number_of_tests' data={data} key={data} selected={selectedGraph=='total_number_of_tests'}/>
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                        <TouchableOpacity onPress={() => setcurrGraphType('cumulative_number_of_positives')}>
-                            <DayChange dataType='cumulative_number_of_positives' data={data} key={data} />
+                        <TouchableOpacity onPress={() => {setcurrGraphType('cumulative_number_of_positives'), setSelectedGraph('cumulative_number_of_positives')}}>
+                            <DayChange dataType='cumulative_number_of_positives' data={data} key={data} selected={selectedGraph=='cumulative_number_of_positives'}/>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setcurrGraphType('cumulative_number_of_tests')}>
-                            <DayChange dataType='cumulative_number_of_tests' data={data} key={data} />
+                        <TouchableOpacity onPress={() => {setcurrGraphType('cumulative_number_of_tests'), setSelectedGraph('cumulative_number_of_tests')}}>
+                            <DayChange dataType='cumulative_number_of_tests' data={data} key={data} selected={selectedGraph=='cumulative_number_of_tests'}/>
                         </TouchableOpacity>
                     </View>
 
@@ -188,7 +187,8 @@ const styles = StyleSheet.create({
     },
     container: {
         paddingTop: 10,
-        paddingHorizontal:10
+        paddingHorizontal:10,
+        justifyContent:"space-around"
     },
     graphContainer: {
         marginVertical: 25,

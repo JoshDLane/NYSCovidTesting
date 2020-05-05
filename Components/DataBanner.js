@@ -7,7 +7,7 @@ export default function DataBanner () {
             <View style={styles.container}>
                 <Text style={styles.text}>
                     All Data is provided directly by The New York State Department of Health.
-                    Click to see more information on the data source.
+                    Click to see more information on the data source and interpretation.
                 </Text>
             </View>
     )

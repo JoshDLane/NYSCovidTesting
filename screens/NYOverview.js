@@ -6,10 +6,13 @@ import EnterDataButton from '../Components/EnterDataButton'
 import CVBanner from '../Components/CVBanner'
 import DayChange from '../Components/DayChange'
 import RatePositive from '../Components/RatePositive'
+import { NYS_ID } from 'react-native-dotenv'
+
 export default function NYOverview(props) {
     const [data, setData] = useState([])
     const [recentData, setRecentData] = useState([])
     const [loading, setLoading] = useState(false)
+
     const [recentDate, setRecentDate] = useState('')
     const [nyNewPos, setNYNewPos] = useState('')
     const [nyNewTests, setnyNewTests] = useState('')
@@ -22,16 +25,15 @@ export default function NYOverview(props) {
             {
                 method: 'get',
                 headers: new Headers({
-                    "$$app_token": "weiei1vq5gb6wqtlqnvhqg1",
+                    "$$app_token": NYS_ID,
                 })
             });
         var respJson = await (resp.json())
         respJson.sort((a, b) => (a.test_date > b.test_date) ? 1 : -1)
         let recentDate = respJson.map(d => d.test_date)[respJson.length - 1]
         var myrecentData = await respJson.filter(county => county.test_date === recentDate)
-        setRecentDate(recentDate)
+        setData(respJson)
         setRecentData(myrecentData)
-        console.log('rec date', respJson)
         setLoading(false)
     }
 
@@ -46,8 +48,8 @@ export default function NYOverview(props) {
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start', paddingRight: 30 }}>
                     <UpdateStatus date={recentData.map(d => d.test_date)[recentData.length - 1]} />
                 </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 20 }}>
-                        <RatePositive data={recentData} type='stateLevel' isLoading={loading}/>
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 20, marginTop:10 }}>
+                        <RatePositive data={data} type='stateLevel' isLoading={loading} stateLevel={true}/>
                 </View>
                 <View style={{ marginHorizontal: 10 }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
