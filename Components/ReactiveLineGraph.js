@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useEventListener, handler } from 'react'
-import { ActivityIndicator, View, StyleSheet, Text, SafeAreaView, Dimensions, Animated } from 'react-native'
+import { ActivityIndicator, View, StyleSheet, Text, SafeAreaView, Dimensions, Animated, TextInput } from 'react-native'
 import { Svg, Path, Circle, Defs, LinearGradient, Stop } from 'react-native-svg'
 import * as path from 'svg-path-properties';
 import * as shape from 'd3-shape';
+
 // import d3 from 'd3'
 
 import {
@@ -17,18 +18,13 @@ const d3 = {
 };
 
 const graphWidth = Dimensions.get('window').width - 20;
-const graphHeight = 200;
+const graphHeight = 225;
 const verticalPadding = 10;
 const horizontalPadding = 10;
 const cursorRadius = 7.5;
 const labelWidth = 100;
-
-function printData(data){
-    console.log(data)
-
-}
-
 export default class ReactiveLineGraph extends React.Component {
+    
     cursor = React.createRef();
 
     label = React.createRef();
@@ -45,16 +41,33 @@ export default class ReactiveLineGraph extends React.Component {
     .y(d => this.state.scaleY(d[this.props.graphType]))
     .curve(d3.shape.curveLinear)(this.props.data);
 
+    y_values = this.props.data.map(d => d[this.props.graphType])
+    x_values = this.props.data.map(d => d['test_date'])
+    // maxDate = this.x_values[this.x_values.length - 1]
+    // minDate = this.x_values[1]
 
-    scaleLabel = scaleQuantile().domain([0, 300]).range([0, 200, 300]);
+    
+    scaleLabel = scaleQuantile().domain([0, Math.max(...this.y_values)]).range(this.y_values);
+    // scaleDate = scaleQuantile().domain([this.minDate, this.maxDate]).range(this.x_values);
 
+    findValue(date) {
+        var mydate = new Date(date)
+        mydate.setUTCHours(0,0,0,0);
+        mydate = mydate.toISOString().slice(0,-1)
+        console.log(this.props.data)
+        return this.props.data.find(d => d['test_date'] === mydate)[this.props.graphType]
+    }
     getMinY() {
     return this.props.data.reduce((min, b) => Math.min(min, b[this.props.graphType]), this.props.data[0][this.props.graphType]);
 }
     getMaxY() {
     return this.props.data.reduce((max, b) => Math.max(max, b[this.props.graphType]), this.props.data[0][this.props.graphType]);
 }
+    arrangeDate(date) {
+        var currDate = new Date(date)
+        return `${currDate.getUTCMonth()}/${currDate.getUTCDate()+1}`
 
+    }
 
     getMinX() {
     // return TSCovid.reduce((min, b) => Math.min(min, b.date), TSCovid[0].date);
@@ -71,8 +84,10 @@ export default class ReactiveLineGraph extends React.Component {
     moveCursor(value) {
         const { x, y } = this.properties.getPointAtLength(this.lineLength - value);
         this.cursor.current.setNativeProps({ top: y - cursorRadius, left: x - cursorRadius });
-        // const label = scaleLabel(scaleY.invert(y));
-        // this.label.current.setNativeProps({ text: `${label} CHF` });
+        const date = this.state.scaleX.invert(x)
+        const label = this.findValue(date)
+        console.log('here', date, label)
+        this.label.current.setNativeProps({ text: `${this.arrangeDate(date)}  ${label}` });
     }
 
     componentDidMount() {
@@ -80,10 +95,18 @@ export default class ReactiveLineGraph extends React.Component {
             this.state.x.addListener(({ value }) => this.moveCursor(value));
             this.moveCursor(0);
         }
-        printData(this.props.graphType)
     }
 
     render() {
+
+    let data2 = [{
+        value: 'Banana',
+    }, {
+        value: 'Mango',
+    }, {
+        value: 'Pear',
+    }];
+
         const graphType = this.props.currGraph
         const { x } = this.state;
         const translateX = x.interpolate({
@@ -94,7 +117,7 @@ export default class ReactiveLineGraph extends React.Component {
         if (this.state.loading == true) {
             return (
                 <View styel={styles.graphContainer}>
-                    <Text>HI</Text>
+                    <ActivityIndicator/>
                 </View>
             )
 
@@ -117,6 +140,9 @@ export default class ReactiveLineGraph extends React.Component {
                                 <Path d={`${this.line} L ${graphWidth} ${graphHeight} L 0 ${graphHeight}`} fill="url(#gradient)" />
                                 <View ref={this.cursor} style={styles.cursor} />
                             </Svg>
+                            <Animated.View style={[styles.label, { transform: [{ translateX }]}]}>
+                                <TextInput style={{color: 'white', textAlign: 'center'}} ref={this.label}/>
+                            </Animated.View>
                             <Animated.ScrollView
                                 style={StyleSheet.absoluteFill}
                                 contentContainerStyle={{ width: this.lineLength * 2 }}
@@ -153,7 +179,6 @@ const styles = StyleSheet.create({
         height: graphHeight,
         alignContent: 'center',
         justifyContent: 'center',
-        marginTop: 75,
     },
     cursor: {
         width: 15,
@@ -163,5 +188,11 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         backgroundColor: 'black',
 
+    },
+    label: {
+        position: 'absolute',
+        top: -15,
+        left: 0,
+        width: labelWidth,
     }
 })

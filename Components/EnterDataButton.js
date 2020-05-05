@@ -5,11 +5,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function EnterDataButton(props) {
     return (
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical:20}}>
                 <View style={styles.container}>
                     <View>
                         <Text style={styles.textFormat}>
-                         Details >
+                         County Data >
                     </Text>
                     </View>
                 </View>

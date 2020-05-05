@@ -1,13 +1,12 @@
-import React, {useState, useEffect} from 'react'
-import { View, Text, StyleSheet, TouchableWithoutFeedbackBase } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
 import Svg from 'react-native-svg'
 import { Circle, Path, G } from 'react-native-svg'
-import d3 from 'd3'
 import { geoMercator, geoPath } from 'd3-geo'
+import { colors } from '../styles/colors'
 
 export default function Map() {
     const NYgeo = require('../data/NY.json');
-    const NYData = require('../data/NYCovid.json')
     const coordinates = require('../data/coordinates')
 
     const projection = geoMercator()
@@ -16,31 +15,29 @@ export default function Map() {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
 
-    async function getNYData(region) {
+    async function getNYData() {
         setLoading(true)
         var resp = await fetch(`https://health.data.ny.gov/resource/xdss-u53e.json`,
             {
                 method: 'get',
                 headers: new Headers({
                     "$$app_token": "weiei1vq5gb6wqtlqnvhqg1",
-                                })
+                })
             });
+
         var respJson = await (resp.json())
 
         respJson.sort((a, b) => (a.test_date > b.test_date) ? 1 : -1)
         recentDate = respJson.map(d => d.test_date)[respJson.length - 1]
         var recentData = respJson.filter(function (e) {
-           return e.test_date == recentDate;
-           });
+            return e.test_date == recentDate;
+        });
         setData(recentData)
-        console.log('recent date', recentDate)
-        console.log('recent data', recentData)
         setLoading(false)
     }
 
-
     useEffect(() => {
-        getNYData('Bronx')
+        getNYData()
     }, []);
 
 
@@ -53,14 +50,12 @@ export default function Map() {
     //     return Math.max.apply(Math, NYData.map(function(o) { return o.deaths; }))
     // }
     const MaxCases = findMaxPositives(data)
-    console.log(MaxCases)
 
     function getPath(pathD) {
         return pathBuilder(pathD)
     };
 
     function circleX(county) {
-        console.log(county)
         return projection([coordinates[county].Longitude, coordinates[county].Latitude])[0]
         console.log('drawing circle')
     }
@@ -85,8 +80,32 @@ export default function Map() {
         })[0]
         // }
         if (thisCounty) {
-            var normCases = (thisCounty.cumulative_number_of_positives / 10000)
-            return normCases.toFixed(2).toString()
+            if (thisCounty.cumulative_number_of_positives > 20000) {
+                return '.9'
+            }
+            else if (thisCounty.cumulative_number_of_positives > 15000) {
+                return '.75'
+            }
+            else if (thisCounty.cumulative_number_of_positives > 10000) {
+                return '.65'
+            }
+            else if (thisCounty.cumulative_number_of_positives > 5000) {
+                return '.55'
+            }
+            else if (thisCounty.cumulative_number_of_positives > 1000) {
+                return '.35'
+            }
+            else if (thisCounty.cumulative_number_of_positives > 500) {
+                return '.25'
+            }
+            else if (thisCounty.cumulative_number_of_positives > 100) {
+                return '.15'
+            }
+            else {
+                return '.1'
+            }
+            // var normCases = (thisCounty.cumulative_number_of_positives / 10000)
+            // return normCases.toFixed(2).toString()
         }
         else {
             return '.01'
@@ -94,12 +113,16 @@ export default function Map() {
     }
 
     function getRadius(county) {
-        return county.cumulative_number_of_positives/350
+        return county.cumulative_number_of_positives / 350
     }
-
-
-    return (
-        <View style={styles.mapContainer}>
+    if (loading) {
+        context =
+            <View style={{ height: 500, alignContent: 'center', justifyContent: 'center' }}>
+                <ActivityIndicator />
+            </View>
+    }
+    else {
+        context =
             <Svg width="500" height="500" viewBox="265 110 30 30">
                 {/* <Circle 
                 cx='0'
@@ -111,36 +134,34 @@ export default function Map() {
                 <G>
                     {NYgeo.features.map(
                         (pathD, i) =>
-                            <Path
-                                fill='white'
-                                opacity='.7'
-                                d={getPath(pathD)}
-                                key={pathD} />
+                            <React.Fragment key={`${pathD.properties.name}+${Math.random()}`}>
+                                <Path
+                                    fill='white'
+                                    opacity='1'
+                                    d={getPath(pathD)}
+                                    key={`${pathD.properties.name}+${Math.random()}`} />
+                                {/* <Path
+                                    fill={colors.myOrange}
+                                    opacity='.01'
+                                    d={getPath(pathD)}
+                                    key={`${pathD.properties.name}+${i}`} /> */}
+                                <Path
+                                    fill='red'
+                                    opacity={findOpacity(pathD)}
+                                    stroke='black'
+                                    strokeWidth='.1'
+                                    d={getPath(pathD)}
+                                    key={`${pathD.properties.name}+${Math.random()}`} />
+                                <Path
+                                    stroke='black'
+                                    strokeWidth='.1'
+                                    opacity='.5'
+                                    d={getPath(pathD)}
+                                    key={`${pathD.properties.name}+${Math.random()}`} />
+                            </React.Fragment>
                     )}
                 </G>
-                <G>
-                    {NYgeo.features.map(
-                        (pathD, i) =>
-                            <Path
-                                fill='blue'
-                                opacity={findOpacity(pathD)}
-                                stroke='black'
-                                strokeWidth='.1'
-                                d={getPath(pathD)}
-                                key={pathD} />
-                    )}
-                </G>
-                <G>
-                    {NYgeo.features.map(
-                        (pathD, i) =>
-                            <Path
-                                stroke='black'
-                                strokeWidth='.1'
-                                opacity='.5'
-                                d={getPath(pathD)}
-                                key={pathD} />
-                    )}
-                </G>
+                
                 {/* <G>
                     {data.map(
                         (CData, i) =>
@@ -155,9 +176,14 @@ export default function Map() {
 
                             />
                     )}
-                </G> */}
-
+                    </G> */}
             </Svg>
+    }
+
+    return (
+
+        <View style={styles.mapContainer}>
+            {context}
         </View>
     )
 }

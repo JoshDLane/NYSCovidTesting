@@ -1,17 +1,18 @@
 
 import React, { useState } from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
-  Text,
-  StatusBar,
+  TouchableOpacity
 } from 'react-native';
 import CVBanner from './Components/CVBanner'
 import Map from './Components/map'
 import NYOverview from './screens/NYOverview'
 import TimeGraph from './screens/timeGraph'
+import { colors, dimensions } from './styles/colors'
+import DataInfo from './Components/DataInfo'
+import DataBanner from './Components/DataBanner'
+
 // import { createStackNavigator } from 'react-navigation-stack'
 // import { createAppContainer } from 'react-navigation'
 
@@ -21,8 +22,18 @@ import TimeGraph from './screens/timeGraph'
 // })
 
 function App() {
-  
+
+  const [seeDataInfo, setSeeDataInfo] = useState(false)
+
   const [screen, setScreen] = useState('home')
+
+  function seeDataHandler() {
+    setSeeDataInfo(true)
+  }
+  function cancelDataHandler() {
+    setSeeDataInfo(false)
+  }
+
 
   if (screen == 'home') {
     content = <NYOverview onButtonClick={() => setScreen('timeSeries')} />
@@ -33,15 +44,22 @@ function App() {
 
   return (
     <View style={styles.container}>
-      {content}
+      <View style={{height:dimensions.fullHeight*.925}}>
+        {content}
+      </View>
+      <DataInfo visible={seeDataInfo} onCancel={cancelDataHandler} />
+      <TouchableOpacity onPress={seeDataHandler}>
+        <DataBanner />
+      </TouchableOpacity>
     </View>
+
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: 1000,
+    height: dimensions.fullHeight,
     backgroundColor: 'black',
   }
 });

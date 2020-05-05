@@ -1,40 +1,70 @@
-import React from 'react'
-import { View, Text, StyleSheet, TouchableHighlight, TouchableOpacity } from 'react-native'
+import React, { useEffect } from 'react'
+import { View, Text, StyleSheet, TouchableHighlight, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native'
 import { Svg, Path } from 'react-native-svg'
+import { colors } from '../styles/colors'
+import { precisionPrefix } from 'd3'
 
 const titleList = {
-    total_number_of_tests: 'New Tests', cumulative_number_of_tests: 'Total Tests',
-    new_positives: 'New Positives', cumulative_number_of_positives: 'Total Positives'
+    total_number_of_tests: 'Yesterdays Tests', cumulative_number_of_tests: 'Total Tests',
+    new_positives: 'Yesterdays Positives', cumulative_number_of_positives: 'Total Positives'
 }
-export default function DayChange(props) {
-    title = titleList[props.dataType]
 
-    function getValue() {
-        console.log(props.dataType)
-        console.log('pos', props.data.map(d => d[props.dataType])[props.data.length - 1])
+
+
+export default function DayChange(props) {
+
+    function getRecentValue() {
         return props.data.map(d => d[props.dataType])[props.data.length - 1]
     }
 
+    function calculateNY() {
+        const reducer = (accumulator, currentValue) => accumulator + currentValue;
+        if (props.dataType == 'new_positives') {
+            return props.data.map(d => parseInt(d['new_positives'])).reduce(reducer, 0)
+        }
+        else if (props.dataType == 'total_number_of_tests') {
+            return props.data.map(d => parseInt(d['total_number_of_tests'])).reduce(reducer, 0)
+        }
+        else if (props.dataType == 'cumulative_number_of_positives') {
+            return props.data.map(d => parseInt(d['cumulative_number_of_positives'])).reduce(reducer, 0)
+        }
+        else {
+            return props.data.map(d => parseInt(d['cumulative_number_of_tests'])).reduce(reducer, 0)
+        }
+    }
+    const title = titleList[props.dataType]
+    if (props.isLoading == true) {
+        context = <ActivityIndicator />
+    }
+    else {
+
+        if (props.state) {
+            context =
+                <Text style={styles.newValue}>{calculateNY()}</Text>
+        }
+        else {
+            context =
+                <Text style={styles.newValue}>{getRecentValue()}</Text>
+
+        }
+
+    }
+    var totcontext =
+        <View style={{ width: Dimensions.get('window').width / 2.2, padding: 5 }}>
+            <View>
+                <Text style={styles.changesTitle}>{title}</Text>
+            </View>
+            <View>
+                <View style={{ justifyContent: 'center', marginLeft: 30 }}>
+                    {context}
+                </View>
+            </View>
+        </View>
+
     return (
         <View style={styles.rootContainer}>
-            <View style={{backgroundColor: 'black'}}>
-                <View>
-                    <Text style={styles.changesTitle}>{title}</Text>
-                </View>
-                <View style={styles.updateContainer}>
-                    <View style={{ alignContent: 'center', justifyContent: 'center' }}>
-                        <Svg width="25px" height="25px" viewBox="0 0 60 60">
-                            <Path
-                                d="M 10 10 L 50 10 L 30 50 z"
-                                fill='#52e4c2'
-                                stroke="#52e4c2"
-                                stroke-width="2" />
-                        </Svg>
-                    </View>
-                    <View style={{ justifyContent: 'center', marginLeft: 15 }}>
-                        <Text style={styles.newValue}>{getValue()}</Text>
-                    </View>
-                </View>
+            <View style={{ backgroundColor: 'black' }}>
+                {totcontext}
             </View>
         </View>
     )
@@ -43,22 +73,23 @@ export default function DayChange(props) {
 const styles = StyleSheet.create({
     rootContainer: {
         marginHorizontal: 5,
-        marginVertical: 15,
+        marginVertical: 10,
         backgroundColor: 'white',
         borderRadius: 8,
     },
     updateContainer: {
         flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     changesTitle: {
-        fontSize: 20,
-        color: "#52e4c2",
+        fontSize: 25,
+        color: colors.myGreen,
         margin: 5,
         fontWeight: '500'
     },
     newValue: {
-        color: '#52e4c2',
-        fontSize: 25,
+        color: colors.myOrange,
+        fontSize: 30,
         textAlign: 'center'
     }
 })

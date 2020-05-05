@@ -8,18 +8,18 @@ export default function CVBanner(props) {
                 <TouchableOpacity onPress={props.backToHome}>
                     <View style={{textAlign: 'center'}}>
                     <Image 
-                        style={{height: 40, width: 50, marginHorizontal: 10}}
+                        style={{height: 32, width: 41, marginHorizontal: 10}}
                         source={require('../assets/NYIcon.png')} />
                     </View>
                 </TouchableOpacity>
-                <Text style={styles.headerTxt}>NYS COVID TRACKER</Text>
-                <Text style={{height:35, width: 35, margin: 10}}></Text>
+                <Text style={styles.headerTxt}>NYS COVID TESTING</Text>
+                <Text style={{height:32, width: 41, margin: 10}}></Text>
             </View>
     }
     else {
         context =
             <View style={styles.banner}>
-                <Text style={styles.headerTxt}>NYS COVID TRACKER</Text>
+                <Text style={styles.headerTxt}>NYS COVID TESTING</Text>
             </View>
     }
     return (
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     },
     headerTxt: {
         color: '#000000',
-        fontSize: 25,
+        fontSize: 28,
         fontWeight: '500',
         textAlign: 'center'
     },
