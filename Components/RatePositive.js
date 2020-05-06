@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
 import { colors } from '../styles/colors'
 import { Svg, Path } from 'react-native-svg'
-import { arc } from 'd3'
 
 export default function RatePositive(props) {
 
@@ -19,7 +18,6 @@ export default function RatePositive(props) {
         var prev3TestSum = prev3Test.reduce((previous, current) => current += previous);
         var prev3TestAv = prev3TestSum / 3
         var curr3day = prev3PosAv / prev3TestAv
-        console.log('curr2', curr3day)
 
 
         const stepped3Pos = prev3Days.map(d => parseInt(d['new_positives']))
@@ -29,7 +27,6 @@ export default function RatePositive(props) {
         var stepped3TestMean = stepped3Test.reduce((previous, current) => current += previous);
         var stepped3TestAv = stepped3TestMean / 3
         var stepped3day = stepped3PosAv / prev3TestAv
-        console.log('curr3', stepped3day)
 
     }
 
@@ -41,7 +38,6 @@ export default function RatePositive(props) {
         var prev3TestSum = prev3Test.reduce((previous, current) => current += previous);
         var prev3TestAv = prev3TestSum / 3
         var curr3day = prev3PosAv / prev3TestAv
-        console.log('curr', curr3day)
 
 
         var stepped3Pos = props.data.map(d => parseInt(d['new_positives'])).slice(props.data.length - 6, props.data.length - 3)
@@ -51,7 +47,6 @@ export default function RatePositive(props) {
         var stepped3TestSum = stepped3Test.reduce((previous, current) => current += previous);
         var stepped3TestAv = stepped3TestSum / 3
         var stepped3day = stepped3PosAv / stepped3TestAv
-        console.log('stepped', stepped3day)
     }
 
     upArrow = <Svg width="35px" height="35px" viewBox="0 -25 50 50">
@@ -64,7 +59,7 @@ export default function RatePositive(props) {
             transform="rotate(-45)" 
             />
         <Path
-            d='M 20 12 20 28 40 20'
+            d='M 20 11 20 29 40 20'
             fill={colors.myRed}
             stroke={colors.myRed}
             opacity={.8}
@@ -155,7 +150,7 @@ export default function RatePositive(props) {
             </React.Fragment>
     }
     return (
-        <View style={{ marginVertical: 5 }}>
+        <View style={{ }}>
             <View style={{ flexDirection: 'row' }}>
                 <View style={{ justifyContent: 'center', marginHorizontal: 10 }}>
                     <Text style={styles.titleText}>

@@ -44,12 +44,12 @@ function App() {
 
   return (
     <View style={styles.container}>
-      <View style={{height:dimensions.fullHeight*.925}}>
+      <View style={{ height: '92%' }}>
         {content}
       </View>
       <DataInfo visible={seeDataInfo} onCancel={cancelDataHandler} />
-      <TouchableOpacity onPress={seeDataHandler}>
-        <DataBanner />
+      <TouchableOpacity style={styles.banner} onPress={seeDataHandler}>
+          <DataBanner />
       </TouchableOpacity>
     </View>
 
@@ -58,9 +58,12 @@ function App() {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
     height: dimensions.fullHeight,
     backgroundColor: 'black',
+    justifyContent: 'space-between'
+  },
+  banner: {
+    height: '8%'
   }
 });
 

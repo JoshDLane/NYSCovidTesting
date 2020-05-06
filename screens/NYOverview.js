@@ -6,18 +6,11 @@ import EnterDataButton from '../Components/EnterDataButton'
 import CVBanner from '../Components/CVBanner'
 import DayChange from '../Components/DayChange'
 import RatePositive from '../Components/RatePositive'
-import { NYS_ID } from 'react-native-dotenv'
 
 export default function NYOverview(props) {
     const [data, setData] = useState([])
     const [recentData, setRecentData] = useState([])
     const [loading, setLoading] = useState(false)
-
-    const [recentDate, setRecentDate] = useState('')
-    const [nyNewPos, setNYNewPos] = useState('')
-    const [nyNewTests, setnyNewTests] = useState('')
-    const [nyTotPos, setnyTotPos] = useState('')
-    const [nyTotTests, setnyTotTests] = useState('')
 
     async function getNYData() {
         setLoading(true)
@@ -25,7 +18,7 @@ export default function NYOverview(props) {
             {
                 method: 'get',
                 headers: new Headers({
-                    "$$app_token": NYS_ID,
+                    "$$app_token": "weiei1vq5gb6wqtlqnvhqg1",
                 })
             });
         var respJson = await (resp.json())
@@ -42,42 +35,32 @@ export default function NYOverview(props) {
     }, []);
 
     return (
-        <View style={styles.background}>
-            <CVBanner />
+        <View style={styles.root_container}>
+            <View style={{ height: '11%' }}>
+                <CVBanner />
+            </View>
             <View style={styles.container}>
-                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', paddingRight: 30 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                     <UpdateStatus date={recentData.map(d => d.test_date)[recentData.length - 1]} />
                 </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 20, marginTop:10 }}>
-                        <RatePositive data={data} type='stateLevel' isLoading={loading} stateLevel={true}/>
-                </View>
-                <View style={{ marginHorizontal: 10 }}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                        <TouchableOpacity onPress={() => setcurrGraphType('new_positives')}>
-                            <DayChange dataType='new_positives' data={recentData} state='true' isLoading={loading}/>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setcurrGraphType('total_number_of_tests')}>
-                            <DayChange dataType='total_number_of_tests' data={recentData} state='true' isLoading={loading}/>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                        <TouchableOpacity onPress={() => setcurrGraphType('cumulative_number_of_positives')}>
-                            <DayChange dataType='cumulative_number_of_positives' data={recentData} state='true' isLoading={loading}/>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setcurrGraphType('cumulative_number_of_tests')}>
-                            <DayChange dataType='cumulative_number_of_tests' data={recentData} state='true' isLoading={loading}/>
-                        </TouchableOpacity>
-                    </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 20, marginTop: 10, }}>
+                    <RatePositive data={data} type='stateLevel' isLoading={loading} stateLevel={true} />
                 </View>
                 <View>
-                    <View style={{ marginTop: -150 }}>
-                        <Map />
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                        <DayChange dataType='new_positives' data={recentData} state='true' isLoading={loading} />
+                        <DayChange dataType='total_number_of_tests' data={recentData} state='true' isLoading={loading} />
                     </View>
-                    <View style={{ alignContent: 'center', marginTop: -140 }}>
-                        <TouchableOpacity onPress={props.onButtonClick}>
-                            <EnterDataButton />
-                        </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                        <DayChange dataType='cumulative_number_of_positives' data={recentData} state='true' isLoading={loading} />
+                        <DayChange dataType='cumulative_number_of_tests' data={recentData} state='true' isLoading={loading} />
                     </View>
+                </View>
+                <Map />
+                <View style={{ alignContent: 'center' }}>
+                    <TouchableOpacity style={{marginBottom:0}} onPress={props.onButtonClick}>
+                        <EnterDataButton />
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
@@ -85,11 +68,14 @@ export default function NYOverview(props) {
 }
 const styles = StyleSheet.create({
     container: {
+        height: '89%',
         paddingTop: 10,
-        paddingHorizontal:10,
+        paddingHorizontal: 10,
+        paddingVertical:10,
         justifyContent: 'space-around'
 
     },
-    background: {
+    root_container: {
+        height: '100%'
     }
 })

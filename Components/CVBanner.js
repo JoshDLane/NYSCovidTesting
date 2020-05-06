@@ -18,12 +18,10 @@ export default function CVBanner(props) {
     }
     else {
         context =
-            <View style={styles.banner}>
                 <Text style={styles.headerTxt}>NYS COVID TESTING</Text>
-            </View>
     }
     return (
-        <View>
+        <View style={styles.banner}>
             {context}
         </View>
     )
@@ -32,13 +30,11 @@ export default function CVBanner(props) {
 
 const styles = StyleSheet.create({
     banner: {
-        height: 100,
-        width: '100%',
-        flexDirection: 'row',
+        height:'100%',
         backgroundColor: "#f6993f",
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignContent: 'center',
-        paddingTop: 55,
+        paddingBottom: 5
     },
     headerTxt: {
         color: '#000000',
@@ -47,12 +43,9 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     banner_details: {
-        height: 100,
-        width: '100%',
         flexDirection: 'row',
-        backgroundColor: "#f6993f",
         justifyContent: 'space-between',
         alignContent: 'center',
-        paddingTop: 55,
+        marginBottom: -18,
     }
 })

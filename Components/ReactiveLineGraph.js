@@ -3,7 +3,7 @@ import { ActivityIndicator, View, StyleSheet, Text, SafeAreaView, Dimensions, An
 import { Svg, Path, Circle, Defs, LinearGradient, Stop } from 'react-native-svg'
 import * as path from 'svg-path-properties';
 import * as shape from 'd3-shape';
-
+import {colors, dimensions} from '../styles/colors'
 // import d3 from 'd3'
 
 import {
@@ -17,8 +17,8 @@ const d3 = {
     shape,
 };
 
-const graphWidth = Dimensions.get('window').width - 20;
-const graphHeight = 225;
+const graphWidth = dimensions.fullWidth - 20;
+const graphHeight = dimensions.fullHeight/4;
 const verticalPadding = 10;
 const horizontalPadding = 10;
 const cursorRadius = 7.5;
@@ -54,7 +54,6 @@ export default class ReactiveLineGraph extends React.Component {
         var mydate = new Date(date)
         mydate.setUTCHours(0,0,0,0);
         mydate = mydate.toISOString().slice(0,-1)
-        console.log(this.props.data)
         return this.props.data.find(d => d['test_date'] === mydate)[this.props.graphType]
     }
     getMinY() {
@@ -71,11 +70,9 @@ export default class ReactiveLineGraph extends React.Component {
 
     getMinX() {
     // return TSCovid.reduce((min, b) => Math.min(min, b.date), TSCovid[0].date);
-    console.log('min date', this.props.data.map(d => d.test_date)[0])
     return this.props.data.map(d => d.test_date)[0];
 }
     getMaxX() {
-    console.log('max date', this.props.data.map(d => d.test_date)[this.props.data.length - 1])
     return this.props.data.map(d => d.test_date)[this.props.data.length - 1];
 }
 
@@ -86,7 +83,6 @@ export default class ReactiveLineGraph extends React.Component {
         this.cursor.current.setNativeProps({ top: y - cursorRadius, left: x - cursorRadius });
         const date = this.state.scaleX.invert(x)
         const label = this.findValue(date)
-        console.log('here', date, label)
         this.label.current.setNativeProps({ text: `${this.arrangeDate(date)}  ${label}` });
     }
 

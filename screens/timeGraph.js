@@ -10,8 +10,6 @@ import RNPickerSelect, { defaultStyles } from 'react-native-picker-select';
 import { Chevron } from 'react-native-shapes';
 import { colors } from '../styles/colors'
 import RatePositive from '../Components/RatePositive';
-import DataInfo from '../Components/DataInfo'
-import DataBanner from '../Components/DataBanner'
 
 
 
@@ -52,9 +50,11 @@ export default function TimeGraph(props) {
 
     return (
         <View style={styles.root_container}>
-            <CVBanner backToHome={props.onBackButtonClick} />
-            <View style={styles.container}>
-                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', paddingRight: 30 }}>
+            <View style={{height: '11%'}}>
+                <CVBanner backToHome={props.onBackButtonClick} />
+            </View>
+            <View style={styles.contentContainer}>
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                     <UpdateStatus date={data.map(d => d.test_date)[data.length - 1]} />
                 </View>
                 <View style={styles.selectRootContainer}>
@@ -91,7 +91,7 @@ export default function TimeGraph(props) {
                     />
                 </View>
 
-                <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10, marginRight: 20 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 20 }}>
                     <RatePositive data={data} key={data} />
                 </View>
 
@@ -112,7 +112,6 @@ export default function TimeGraph(props) {
                         <DayChange dataType='cumulative_number_of_tests' data={data} />
                     </TouchableOpacity>
                 </View> */}
-                <View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                         <TouchableOpacity onPress={() => {setcurrGraphType('new_positives'), setSelectedGraph('new_positives')}}>
                             <DayChange dataType='new_positives' data={data} key={data} selected={selectedGraph=='new_positives'}/>
@@ -129,27 +128,6 @@ export default function TimeGraph(props) {
                             <DayChange dataType='cumulative_number_of_tests' data={data} key={data} selected={selectedGraph=='cumulative_number_of_tests'}/>
                         </TouchableOpacity>
                     </View>
-
-                </View>
-
-                {/* <View style={styles.updatesContainer}>
-                    <View style={{ marginTop: 20, marginLeft: 0 }}>
-                        <TouchableOpacity onPress={() => setcurrGraphType('new_positives')}>
-                            <DayChange dataType='new_positives' data={data} />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setcurrGraphType('total_number_of_tests')}>
-                            <DayChange dataType='total_number_of_tests' data={data} />
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ marginTop: 20, marginLeft: 0 }}>
-                        <TouchableOpacity onPress={() => setcurrGraphType('cumulative_number_of_positives')}>
-                            <DayChange dataType='cumulative_number_of_positives' data={data} />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setcurrGraphType('cumulative_number_of_tests')}>
-                            <DayChange dataType='cumulative_number_of_tests' data={data} />
-                        </TouchableOpacity>
-                    </View>
-                </View> */}
                 <View style={styles.graphContainer}>
                     {loading ?
                         <View style={{ height: 220, justifyContent: 'center' }}>
@@ -172,41 +150,19 @@ export default function TimeGraph(props) {
 const styles = StyleSheet.create({
     selectRootContainer: {
         flexDirection: 'row',
-        marginVertical: 15,
-    },
-    pickerContainer: {
-        flex: 1,
-        justifyContent: "center",
-        margin: 50
-    },
-    dropdown: {
-        width: '80%',
+        marginVertical: 10,
     },
     root_container: {
-        justifyContent:"space-around"
+        justifyContent:"space-between",
+        height: '100%'
     },
-    container: {
-        paddingTop: 10,
-        paddingHorizontal:10,
-        justifyContent:"space-around"
+    contentContainer: {
+        height: '89%',
+        padding: 10,
+        justifyContent:'space-around'
     },
     graphContainer: {
-        marginVertical: 25,
+        marginVertical:10,
         alignContent: 'center'
-    },
-    titleContainer: {
-        marginTop: 50,
-        width: 180,
-        shadowColor: 'black',
-        shadowOffset: { width: 1, hight: 2 },
-        shadowRadius: 7,
-        // borderColor: 'white',
-        borderWidth: .5,
-        borderRadius: 10,
-        paddingHorizontal: 5,
-    },
-    updatesContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around'
     }
 })

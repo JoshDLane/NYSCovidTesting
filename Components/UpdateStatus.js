@@ -33,7 +33,6 @@ export default function UpdateStatus(props) {
     function date() {
         if (props.date) {
             var currDate = new Date(props.date)
-            console.log(props.date)
             return `${currDate.getUTCMonth()}/${currDate.getUTCDate() + 1}`
 
             return currDate
@@ -81,7 +80,7 @@ export default function UpdateStatus(props) {
 
 const styles = StyleSheet.create({
     container: {
-        marginVertical: 5,
+        marginTop:0,
         flexDirection: 'row',
         alignContent: 'center',
         justifyContent: 'center'

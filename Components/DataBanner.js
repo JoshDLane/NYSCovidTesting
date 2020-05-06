@@ -6,8 +6,8 @@ export default function DataBanner () {
     return(
             <View style={styles.container}>
                 <Text style={styles.text}>
-                    All Data is provided directly by The New York State Department of Health.
-                    Click to see more information on the data source and interpretation.
+                    Data is provided directly by The New York State Department of Health.
+                    Click to see more info on the data source and interpretation.
                 </Text>
             </View>
     )
@@ -15,10 +15,10 @@ export default function DataBanner () {
 
 const styles = StyleSheet.create({
     container: {
-        height: dimensions.fullHeight*.075,
+        height: "100%",
         paddingHorizontal: 15,
         paddingVertical: 5,
-        backgroundColor: '#373636',
+        backgroundColor: '#252424ff',
     },
     text: {
         color: 'white',

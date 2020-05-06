@@ -49,24 +49,18 @@ export default function DayChange(props) {
         }
 
     }
-    var totcontext =
-        <View style={[styles.buttonContainer, props.selected ? styles.selected : styles.changesTitle]}>
-
-            <View>
-                <Text style={styles.changesTitle}>{title}</Text>
-            </View>
-            <View>
-                <View style={{ justifyContent: 'center', marginLeft: 30, opacity: 1.5 }}>
-                    {context}
-                </View>
-            </View>
-        </View>
-
     return (
         <View style={styles.rootContainer}>
-            <View style={{ backgroundColor: 'black' }}>
-                {totcontext}
-            </View>
+                <View style={[styles.buttonContainer, props.selected ? styles.selected : styles.changesTitle]}>
+                    <View>
+                        <Text style={styles.changesTitle}>{title}</Text>
+                    </View>
+                    <View>
+                        <View style={{ justifyContent: 'center', marginLeft: 30, opacity: 1.5 }}>
+                            {context}
+                        </View>
+                    </View>
+                </View>
         </View>
     )
 }
@@ -74,16 +68,11 @@ export default function DayChange(props) {
 const styles = StyleSheet.create({
     rootContainer: {
         marginHorizontal: 5,
-        marginVertical: 10,
-        backgroundColor: 'white',
         borderRadius: 8,
-    },
-    updateContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
+        backgroundColor: 'black'
     },
     changesTitle: {
-        fontSize: 24,
+        fontSize: 22,
         color: colors.myGreen,
         margin: 5,
         fontWeight: '500'
@@ -94,14 +83,11 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     buttonContainer: {
-        width: Dimensions.get('window').width / 2.3,
         padding: 5,
-        margin: 10,
+        width: Dimensions.get('window').width / 2.3,
         borderRadius: 15,
     },
     selected: {
-        padding: 5,
-        margin: 10,
         borderRadius: 15,
         backgroundColor: 'rgba(78, 78, 78, .3)'
     }

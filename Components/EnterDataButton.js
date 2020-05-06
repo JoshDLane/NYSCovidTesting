@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function EnterDataButton(props) {
     return (
-            <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical:20}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
                 <View style={styles.container}>
                     <View>
                         <Text style={styles.textFormat}>

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
 import Svg from 'react-native-svg'
 import { Circle, Path, G } from 'react-native-svg'
 import { geoMercator, geoPath } from 'd3-geo'
-import { colors } from '../styles/colors'
+import { colors, dimensions } from '../styles/colors'
 
 export default function Map() {
     const NYgeo = require('../data/NY.json');
@@ -14,7 +14,7 @@ export default function Map() {
     const buroughs = ['Bronx', 'New York', 'Queens', 'Richmond', 'Kings']
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
-
+    const graphheight = dimensions.fullHeight/3
     async function getNYData() {
         setLoading(true)
         var resp = await fetch(`https://health.data.ny.gov/resource/xdss-u53e.json`,
@@ -42,7 +42,6 @@ export default function Map() {
 
 
     function findMaxPositives(data) {
-        console.log('doing max')
         return Math.max.apply(Math, data.map(function (o) { return o.cumulative_number_of_positives; }));
     };
 
@@ -57,7 +56,6 @@ export default function Map() {
 
     function circleX(county) {
         return projection([coordinates[county].Longitude, coordinates[county].Latitude])[0]
-        console.log('drawing circle')
     }
 
     function circleY(county) {
@@ -66,19 +64,9 @@ export default function Map() {
 
     function findOpacity(pathD) {
         var paintingCounty = pathD.properties.name;
-        // if (buroughs.includes(paintingCounty)) {
-        //     var thisCounty = NYData.filter(function (countyData) {
-        //         return countyData.county == 'New York City';
-        //     })[0]
-        //     console.log('here')
-        //     console.log(paintingCounty)
-
-        // }
-        // else {
         var thisCounty = data.filter(function (countyData) {
             return countyData.county == paintingCounty;
         })[0]
-        // }
         if (thisCounty) {
             if (thisCounty.cumulative_number_of_positives > 20000) {
                 return '.9'
@@ -123,46 +111,47 @@ export default function Map() {
     }
     else {
         context =
-            <Svg width="500" height="500" viewBox="265 110 30 30">
-                {/* <Circle 
+            <View style={{flexDirection:'row', justifyContent:'center', alignContent:'center', width:'100%'}}>
+                <Svg width={graphheight*1.333} height={graphheight} viewBox="266 110.5 23 16.5">
+                    {/* <Circle 
                 cx='0'
                 cy='0'
                 r = '1000'
                 fill='black'
                 opacity='.90'/> */}
 
-                <G>
-                    {NYgeo.features.map(
-                        (pathD, i) =>
-                            <React.Fragment key={`${pathD.properties.name}+${Math.random()}`}>
-                                <Path
-                                    fill='white'
-                                    opacity='1'
-                                    d={getPath(pathD)}
-                                    key={`${pathD.properties.name}+${Math.random()}`} />
-                                {/* <Path
+                    <G>
+                        {NYgeo.features.map(
+                            (pathD, i) =>
+                                <React.Fragment key={`${pathD.properties.name}+${Math.random()}`}>
+                                    <Path
+                                        fill='white'
+                                        opacity='1'
+                                        d={getPath(pathD)}
+                                        key={`${pathD.properties.name}+${Math.random()}`} />
+                                    {/* <Path
                                     fill={colors.myOrange}
                                     opacity='.01'
                                     d={getPath(pathD)}
                                     key={`${pathD.properties.name}+${i}`} /> */}
-                                <Path
-                                    fill='red'
-                                    opacity={findOpacity(pathD)}
-                                    stroke='black'
-                                    strokeWidth='.1'
-                                    d={getPath(pathD)}
-                                    key={`${pathD.properties.name}+${Math.random()}`} />
-                                <Path
-                                    stroke='black'
-                                    strokeWidth='.1'
-                                    opacity='.5'
-                                    d={getPath(pathD)}
-                                    key={`${pathD.properties.name}+${Math.random()}`} />
-                            </React.Fragment>
-                    )}
-                </G>
-                
-                {/* <G>
+                                    <Path
+                                        fill='red'
+                                        opacity={findOpacity(pathD)}
+                                        stroke='black'
+                                        strokeWidth='.1'
+                                        d={getPath(pathD)}
+                                        key={`${pathD.properties.name}+${Math.random()}`} />
+                                    <Path
+                                        stroke='black'
+                                        strokeWidth='.1'
+                                        opacity='.5'
+                                        d={getPath(pathD)}
+                                        key={`${pathD.properties.name}+${Math.random()}`} />
+                                </React.Fragment>
+                        )}
+                    </G>
+
+                    {/* <G>
                     {data.map(
                         (CData, i) =>
                             <Circle
@@ -177,7 +166,9 @@ export default function Map() {
                             />
                     )}
                     </G> */}
-            </Svg>
+                </Svg>
+            </View>
+
     }
 
     return (
@@ -190,6 +181,7 @@ export default function Map() {
 
 const styles = StyleSheet.create({
     mapContainer: {
-        marginTop: 85,
+        alignContent: 'center',
+        justifyContent: 'center',
     }
 })

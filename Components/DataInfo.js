@@ -10,7 +10,7 @@ export default function DataInfo(props) {
                 <View>
                     <TouchableOpacity onPress={props.onCancel}>
                         <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }} onPress={props.onCancel}>
-                            <Text style={{ margin: 10, fontSize: 22, color: 'grey' }}>
+                            <Text style={{fontSize: 22, color: 'grey' }}>
                                 Cancel
                         </Text>
                         </View>
@@ -74,6 +74,6 @@ const styles = StyleSheet.create({
     mainBodyText: {
         fontSize: 16,
         fontWeight: 'bold',
-        marginVertical: 5,
+        marginBottom: 10,
     }
 })
