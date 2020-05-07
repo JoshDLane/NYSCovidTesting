@@ -28,7 +28,7 @@ export default function DataInfo(props) {
                                     Daily counts reflect all tests completed by end of day the day prior to the update
                                 </Text>
                                 <Text style={styles.mainBodyText}>
-                                    Percent positive tests is calculated from the accumulative positive and testing numbers for the region
+                                    Percent of tests positive is calculated from the cumulative positive and testing numbers for the region
                                 </Text>
                                 <Text style={styles.mainBodyText}>
                                     Trend line for percent tests positive is determined by comparing the average percent positive of the last 3 days to that of the 3 days prior
@@ -36,7 +36,7 @@ export default function DataInfo(props) {
                             </View>
 
                             <Text style={styles.bodyText}>
-                                New York Department of Health --
+                                New York State Department of Health --
                             </Text>
                             <Text style={styles.bodyText}>
                                 "This dataset includes information on the number of tests of individuals for COVID-19 infection performed in New York State beginning March 1, 2020, when the first case of COVID-19 was identified in the state. The primary goal of publishing this dataset is to provide users timely information about local disease spread and reporting of positive cases. The data will be updated daily, reflecting tests completed by 12:00 am (midnight) the day of the update (i.e., all tests completed by the end of the day on the day before the update).
