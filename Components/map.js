@@ -24,7 +24,6 @@ export default function Map() {
             });
 
         var respJson = await (resp.json())
-        console.log('got a resp', respJson)
         respJson.sort((a, b) => (a.test_date > b.test_date) ? 1 : -1)
         recentDate = respJson.map(d => d.test_date)[respJson.length - 1]
         var recentData = respJson.filter(function (e) {
