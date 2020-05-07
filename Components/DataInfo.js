@@ -5,35 +5,36 @@ import { dimensions } from '../styles/colors'
 export default function DataInfo(props) {
     return (
         <Modal visible={props.visible} animationType="slide"  >
-
             <View style={styles.container}>
-                <View>
-                    <TouchableOpacity onPress={props.onCancel}>
+                    <TouchableOpacity style={{height:'5%', justifyContent:'center'}} onPress={props.onCancel}>
                         <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }} onPress={props.onCancel}>
-                            <Text style={{fontSize: 22, color: 'grey' }}>
+                            <Text style={{ fontSize: 22, color: 'grey' }}>
                                 Cancel
-                        </Text>
+                            </Text>
                         </View>
                     </TouchableOpacity>
                     <View style={styles.textContainer}>
                         <View>
                             <Text style={styles.titleFont}>
                                 All data is provided directly by the New York State Department of Health via their public API (https://health.data.ny.gov/Health/New-York-State-Statewide-COVID-19-Testing/xdss-u53e)
-                        </Text>
+                            </Text>
                         </View>
                         <ScrollView style={styles.textScrollConatiner}>
-                            <View style={{marginBottom:5}}>
-                            <Text style={styles.mainBodyText}>
-                                Data is updated daily by 2PM ET
-                            </Text>
-                            <Text style={styles.mainBodyText}>
-                                Daily counts reflect all tests completed by end of day the day prior to the update
-                            </Text>
-                            <Text style={styles.mainBodyText}>
-                                Trend line for percent tests positive is determined by comparing the average percent positive of the last 3 days to that of the 3 days prior
-                            </Text>   
+                            <View style={{ marginBottom: 5 }}>
+                                <Text style={styles.mainBodyText}>
+                                    Data is updated daily by 2PM ET
+                                </Text>
+                                <Text style={styles.mainBodyText}>
+                                    Daily counts reflect all tests completed by end of day the day prior to the update
+                                </Text>
+                                <Text style={styles.mainBodyText}>
+                                    Percent positive tests is calculated from the accumulative positive and testing numbers for the region
+                                </Text>
+                                <Text style={styles.mainBodyText}>
+                                    Trend line for percent tests positive is determined by comparing the average percent positive of the last 3 days to that of the 3 days prior
+                                </Text>
                             </View>
-                         
+
                             <Text style={styles.bodyText}>
                                 New York Department of Health --
                             </Text>
@@ -49,8 +50,6 @@ export default function DataInfo(props) {
 
                     </View>
 
-                </View>
-
             </View>
 
         </Modal>
@@ -59,7 +58,9 @@ export default function DataInfo(props) {
 
 const styles = StyleSheet.create({
     container: {
+        height:'100%',
         padding: 20,
+        justifyContent: 'space-around'
     },
     titleFont: {
         fontSize: 18,
@@ -67,10 +68,12 @@ const styles = StyleSheet.create({
     },
     bodyText: {
         fontSize: 16,
-        marginBottom:10
+        marginBottom: 10
     },
     textContainer: {
-        margin: 10
+        height: '90%',
+        margin: 10,
+        justifyContent: 'space-between'
     },
     textScrollConatiner: {
         marginTop: 20,

@@ -4,7 +4,8 @@ import { colors } from '../styles/colors'
 import { Svg, Path } from 'react-native-svg'
 
 export default function RatePositive(props) {
-
+    
+    // Calculating 3 day averages of percentage test positives
     if (props.stateLevel == true && props.data.length > 1) {
         var dates = props.data.map(d => d['test_date'])
         uniqueD = dates.filter((v, i, a) => a.indexOf(v) === i);
@@ -67,7 +68,7 @@ export default function RatePositive(props) {
             transform="rotate(-45)" 
             />
     </Svg>
-    
+
     downArrow = 
     <Svg width="35px" height="35px" viewBox="-25 0 50 50">
         <Path
@@ -89,6 +90,7 @@ export default function RatePositive(props) {
     </Svg>
 
     if (props.data.length > 1 && stepped3day < curr3day) {
+        // if current 3 day average is greater than the 3 days prior, show trending up. 
         arrow = upArrow
     }
     else {
