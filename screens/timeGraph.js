@@ -9,7 +9,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { Chevron } from 'react-native-shapes';
 import { colors } from '../styles/colors'
 import RatePositive from '../Components/RatePositive';
-
+import config from '../config'
 
 export default function TimeGraph(props) {
     const [currGraphType, setcurrGraphType] = useState('cumulative_number_of_positives')
@@ -23,11 +23,9 @@ export default function TimeGraph(props) {
 
     async function getNYData(region) {
         setLoading(true)
-        var resp = await fetch(`https://health.data.ny.gov/resource/xdss-u53e.json?county=${region}`,
+        var resp = await fetch(`https://health.data.ny.gov/resource/xdss-u53e.json?county=${region}&$$app_token=${config.APP_TOKEN}`,
             {
-                method: 'get',
-                headers: new Headers({
-                })
+                method: 'get'
             });
         var respJson = await (resp.json())
         respJson.sort((a, b) => (a.test_date > b.test_date) ? 1 : -1)

@@ -4,7 +4,7 @@ import Svg from 'react-native-svg'
 import { Path, G } from 'react-native-svg'
 import { geoMercator, geoPath } from 'd3-geo'
 import { dimensions } from '../styles/colors'
-
+import config from '../config'
 export default function Map() {
     const NYgeo = require('../data/NY.json');
     const coordinates = require('../data/coordinates')
@@ -15,18 +15,16 @@ export default function Map() {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
     const graphheight = dimensions.fullHeight/3.1
+  
     async function getNYData() {
         setLoading(true)
-        var resp = await fetch(`https://health.data.ny.gov/resource/xdss-u53e.json`,
+        var resp = await fetch(`https://health.data.ny.gov/resource/xdss-u53e.json?$$app_token=${config.APP_TOKEN}`,
             {
                 method: 'get',
-                headers: new Headers({
-                    "$$app_token": "weiei1vq5gb6wqtlqnvhqg1",
-                })
             });
 
         var respJson = await (resp.json())
-
+        console.log('got a resp', respJson)
         respJson.sort((a, b) => (a.test_date > b.test_date) ? 1 : -1)
         recentDate = respJson.map(d => d.test_date)[respJson.length - 1]
         var recentData = respJson.filter(function (e) {

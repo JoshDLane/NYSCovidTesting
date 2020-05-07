@@ -6,7 +6,7 @@ import EnterDataButton from '../Components/EnterDataButton'
 import CVBanner from '../Components/CVBanner'
 import DayChange from '../Components/DayChange'
 import RatePositive from '../Components/RatePositive'
-import {APP_TOKEN} from '../config'
+import config from '../config'
 
 export default function NYOverview(props) {
     const [data, setData] = useState([])
@@ -15,16 +15,12 @@ export default function NYOverview(props) {
 
     async function getNYData() {
         setLoading(true)
-        var resp = await fetch(`https://health.data.ny.gov/resource/xdss-u53e.json?`,
+        var resp = await fetch(`https://health.data.ny.gov/resource/xdss-u53e.json?$$app_token=${config.APP_TOKEN}`,
             {
-                method: 'get',
-                headers: new Headers({
-                })
+                method: 'get'
             });
-        console.log(APP_TOKEN)
         var respJson = await (resp.json())
         respJson.sort((a, b) => (a.test_date > b.test_date) ? 1 : -1)
-        console.log(respJson)
         let recentDate = respJson.map(d => d.test_date)[respJson.length - 1]
         var myrecentData = await respJson.filter(county => county.test_date === recentDate)
         setData(respJson)
