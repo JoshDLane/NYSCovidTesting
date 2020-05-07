@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
+import { View, StyleSheet, ActivityIndicator } from 'react-native'
 import Svg from 'react-native-svg'
-import { Circle, Path, G } from 'react-native-svg'
+import { Path, G } from 'react-native-svg'
 import { geoMercator, geoPath } from 'd3-geo'
-import { colors, dimensions } from '../styles/colors'
+import { dimensions } from '../styles/colors'
 
 export default function Map() {
     const NYgeo = require('../data/NY.json');
@@ -14,7 +14,7 @@ export default function Map() {
     const buroughs = ['Bronx', 'New York', 'Queens', 'Richmond', 'Kings']
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
-    const graphheight = dimensions.fullHeight/3
+    const graphheight = dimensions.fullHeight/3.1
     async function getNYData() {
         setLoading(true)
         var resp = await fetch(`https://health.data.ny.gov/resource/xdss-u53e.json`,
@@ -45,23 +45,11 @@ export default function Map() {
         return Math.max.apply(Math, data.map(function (o) { return o.cumulative_number_of_positives; }));
     };
 
-    // const MaxDeaths = (NYData) => {
-    //     return Math.max.apply(Math, NYData.map(function(o) { return o.deaths; }))
-    // }
     const MaxCases = findMaxPositives(data)
 
     function getPath(pathD) {
         return pathBuilder(pathD)
     };
-
-    function circleX(county) {
-        return projection([coordinates[county].Longitude, coordinates[county].Latitude])[0]
-    }
-
-    function circleY(county) {
-        return projection([coordinates[county].Longitude, coordinates[county].Latitude])[1]
-    }
-
     function findOpacity(pathD) {
         var paintingCounty = pathD.properties.name;
         var thisCounty = data.filter(function (countyData) {
@@ -92,20 +80,14 @@ export default function Map() {
             else {
                 return '.1'
             }
-            // var normCases = (thisCounty.cumulative_number_of_positives / 10000)
-            // return normCases.toFixed(2).toString()
         }
         else {
             return '.01'
         }
     }
-
-    function getRadius(county) {
-        return county.cumulative_number_of_positives / 350
-    }
     if (loading) {
         context =
-            <View style={{ height: 500, alignContent: 'center', justifyContent: 'center' }}>
+            <View style={{ height: graphheight, alignContent: 'center', justifyContent: 'center' }}>
                 <ActivityIndicator />
             </View>
     }
@@ -113,12 +95,6 @@ export default function Map() {
         context =
             <View style={{flexDirection:'row', justifyContent:'center', alignContent:'center', width:'100%'}}>
                 <Svg width={graphheight*1.333} height={graphheight} viewBox="266 110.5 23 16.5">
-                    {/* <Circle 
-                cx='0'
-                cy='0'
-                r = '1000'
-                fill='black'
-                opacity='.90'/> */}
 
                     <G>
                         {NYgeo.features.map(
@@ -129,11 +105,6 @@ export default function Map() {
                                         opacity='1'
                                         d={getPath(pathD)}
                                         key={`${pathD.properties.name}+${Math.random()}`} />
-                                    {/* <Path
-                                    fill={colors.myOrange}
-                                    opacity='.01'
-                                    d={getPath(pathD)}
-                                    key={`${pathD.properties.name}+${i}`} /> */}
                                     <Path
                                         fill='red'
                                         opacity={findOpacity(pathD)}
@@ -150,22 +121,6 @@ export default function Map() {
                                 </React.Fragment>
                         )}
                     </G>
-
-                    {/* <G>
-                    {data.map(
-                        (CData, i) =>
-                            <Circle
-                                cx={circleX(CData.county)}
-                                cy={circleY(CData.county)}
-                                r={getRadius(CData)}
-                                stroke='black'
-                                fill='red'
-                                strokeWidth='.1'
-                                opacity='.25'
-
-                            />
-                    )}
-                    </G> */}
                 </Svg>
             </View>
 

@@ -3,14 +3,12 @@ import { ActivityIndicator, View, StyleSheet, Text, SafeAreaView, Dimensions, An
 import { Svg, Path, Circle, Defs, LinearGradient, Stop } from 'react-native-svg'
 import * as path from 'svg-path-properties';
 import * as shape from 'd3-shape';
-import {colors, dimensions} from '../styles/colors'
-// import d3 from 'd3'
+import {dimensions} from '../styles/colors'
 
 import {
     scaleTime,
     scaleLinear,
     scaleQuantile,
-    scaleSymlog,
 } from 'd3-scale';
 
 const d3 = {
@@ -69,7 +67,6 @@ export default class ReactiveLineGraph extends React.Component {
     }
 
     getMinX() {
-    // return TSCovid.reduce((min, b) => Math.min(min, b.date), TSCovid[0].date);
     return this.props.data.map(d => d.test_date)[0];
 }
     getMaxX() {

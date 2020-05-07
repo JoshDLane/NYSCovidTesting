@@ -5,24 +5,14 @@ import {
   View,
   TouchableOpacity
 } from 'react-native';
-import CVBanner from './Components/CVBanner'
-import Map from './Components/map'
 import NYOverview from './screens/NYOverview'
 import TimeGraph from './screens/timeGraph'
-import { colors, dimensions } from './styles/colors'
+import { dimensions } from './styles/colors'
 import DataInfo from './Components/DataInfo'
 import DataBanner from './Components/DataBanner'
 
-// import { createStackNavigator } from 'react-navigation-stack'
-// import { createAppContainer } from 'react-navigation'
-
-// const Navigator = createStackNavigator({
-//   NYOverview: { screen: NYOverview},
-//   TimeGraph: {screen: TimeGraph}
-// })
-
 function App() {
-
+  console.disableYellowBox = true; 
   const [seeDataInfo, setSeeDataInfo] = useState(false)
 
   const [screen, setScreen] = useState('home')
@@ -44,7 +34,7 @@ function App() {
 
   return (
     <View style={styles.container}>
-      <View style={{ height: '92%' }}>
+      <View style={{ height: '91%' }}>
         {content}
       </View>
       <DataInfo visible={seeDataInfo} onCancel={cancelDataHandler} />
@@ -63,7 +53,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   banner: {
-    height: '8%'
+    height: '9%'
   }
 });
 

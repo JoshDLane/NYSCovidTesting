@@ -3,14 +3,12 @@ import { useEffect } from 'react';
 import { Text, View, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native'
 import ReactiveLineGraph from '../Components/ReactiveLineGraph'
 import DayChange from '../Components/DayChange'
-import RegionSelect from '../Components/RegionSelect'
 import UpdateStatus from '../Components/UpdateStatus'
 import CVBanner from '../Components/CVBanner'
-import RNPickerSelect, { defaultStyles } from 'react-native-picker-select';
+import RNPickerSelect from 'react-native-picker-select';
 import { Chevron } from 'react-native-shapes';
 import { colors } from '../styles/colors'
 import RatePositive from '../Components/RatePositive';
-
 
 
 export default function TimeGraph(props) {
@@ -29,7 +27,6 @@ export default function TimeGraph(props) {
             {
                 method: 'get',
                 headers: new Headers({
-                    "$$app_token": "weiei1vq5gb6wqtlqnvhqg1",
                 })
             });
         var respJson = await (resp.json())
@@ -94,24 +91,6 @@ export default function TimeGraph(props) {
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 20 }}>
                     <RatePositive data={data} key={data} />
                 </View>
-
-                {/* <View style={{ marginTop: 25, marginRight: 15 }}>
-                    <InfectionRate />
-                </View> */}
-                {/* <View style={{ marginHorizontal: 10, marginVertical: 20 }}>
-                    <TouchableOpacity onPress={() => setcurrGraphType('new_positives')}>
-                        <DayChange dataType='new_positives' data={data} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => setcurrGraphType('total_number_of_tests')}>
-                        <DayChange dataType='total_number_of_tests' data={data} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => setcurrGraphType('cumulative_number_of_positives')}>
-                        <DayChange dataType='cumulative_number_of_positives' data={data} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => setcurrGraphType('cumulative_number_of_tests')}>
-                        <DayChange dataType='cumulative_number_of_tests' data={data} />
-                    </TouchableOpacity>
-                </View> */}
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                         <TouchableOpacity onPress={() => {setcurrGraphType('new_positives'), setSelectedGraph('new_positives')}}>
                             <DayChange dataType='new_positives' data={data} key={data} selected={selectedGraph=='new_positives'}/>

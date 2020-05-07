@@ -67,15 +67,7 @@ export default function RatePositive(props) {
             transform="rotate(-45)" 
             />
     </Svg>
-
-    //     <Path
-    //         d="M 50 50 L 10 50 L 30 10 z"
-    //         fill={colors.myRed}
-    //         stroke={colors.myRed}
-    //         opacity={.8}
-    //         stroke-width="2" />
-    // </Svg>
-
+    
     downArrow = 
     <Svg width="35px" height="35px" viewBox="-25 0 50 50">
         <Path
@@ -95,15 +87,6 @@ export default function RatePositive(props) {
             transform="rotate(45)" 
             />
     </Svg>
-    
-    
-    // <Svg width="35px" height="35px" viewBox="0 0 60 60">
-    //     <Path
-    //         d="M 10 10 L 50 10 L 30 50 z"
-    //         fill={colors.myGreen}
-    //         stroke={colors.myGreen}
-    //         stroke-width="2" />
-    // </Svg>
 
     if (props.data.length > 1 && stepped3day < curr3day) {
         arrow = upArrow

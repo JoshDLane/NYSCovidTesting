@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableHighlight, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native'
-import { Svg, Path } from 'react-native-svg'
+import React from 'react'
+import { View, Text, StyleSheet, Dimensions, ActivityIndicator } from 'react-native'
 import { colors } from '../styles/colors'
-import { precisionPrefix } from 'd3'
 
 const titleList = {
     total_number_of_tests: 'Yesterdays Tests', cumulative_number_of_tests: 'Total Tests',
