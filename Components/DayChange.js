@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet, Dimensions, ActivityIndicator } from 'react-native'
-import { colors } from '../styles/colors'
+import { colors, dimensions } from '../styles/colors'
 
 const titleList = {
     total_number_of_tests: 'Yesterdays Tests', cumulative_number_of_tests: 'Total Tests',
@@ -11,23 +11,28 @@ const titleList = {
 
 export default function DayChange(props) {
 
+    function numberWithCommas(x) {
+        console.log('height', dimensions.fullHeight)
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
     function getRecentValue() {
-        return props.data.map(d => d[props.dataType])[props.data.length - 1]
+        return numberWithCommas(parseInt(props.data.map(d => d[props.dataType])[props.data.length - 1]))
     }
 
     function calculateNY() {
         const reducer = (accumulator, currentValue) => accumulator + currentValue;
         if (props.dataType == 'new_positives') {
-            return props.data.map(d => parseInt(d['new_positives'])).reduce(reducer, 0)
+            return numberWithCommas(props.data.map(d => parseInt(d['new_positives'])).reduce(reducer, 0))
         }
         else if (props.dataType == 'total_number_of_tests') {
-            return props.data.map(d => parseInt(d['total_number_of_tests'])).reduce(reducer, 0)
+            return numberWithCommas(props.data.map(d => parseInt(d['total_number_of_tests'])).reduce(reducer, 0))
         }
         else if (props.dataType == 'cumulative_number_of_positives') {
-            return props.data.map(d => parseInt(d['cumulative_number_of_positives'])).reduce(reducer, 0)
+            return numberWithCommas(props.data.map(d => parseInt(d['cumulative_number_of_positives'])).reduce(reducer, 0))
         }
         else {
-            return props.data.map(d => parseInt(d['cumulative_number_of_tests'])).reduce(reducer, 0)
+            return numberWithCommas(props.data.map(d => parseInt(d['cumulative_number_of_tests'])).reduce(reducer, 0))
         }
     }
     const title = titleList[props.dataType]

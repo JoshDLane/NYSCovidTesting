@@ -38,7 +38,7 @@ function App() {
         {content}
       </View>
       <DataInfo visible={seeDataInfo} onCancel={cancelDataHandler} />
-      <TouchableOpacity style={styles.banner} onPress={seeDataHandler}>
+      <TouchableOpacity style={[styles.banner, Platform.OS !== 'ios' ? styles.androidBanner : styles.banner]} onPress={seeDataHandler}>
           <DataBanner />
       </TouchableOpacity>
     </View>
@@ -50,10 +50,12 @@ const styles = StyleSheet.create({
   container: {
     height: dimensions.fullHeight,
     backgroundColor: 'black',
-    justifyContent: 'space-between'
   },
   banner: {
     height: '9%'
+  },
+  androidBanner: {
+    height: '6%'
   }
 });
 

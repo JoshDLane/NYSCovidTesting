@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     },
     label: {
         position: 'absolute',
-        top: -15,
+        top: -22,
         left: 0,
         width: labelWidth,
     }

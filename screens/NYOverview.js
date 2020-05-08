@@ -34,7 +34,7 @@ export default function NYOverview(props) {
 
     return (
         <View style={styles.root_container}>
-            <View style={{ height: '11%' }}>
+            <View style={{ height: '10%' }}>
                 <CVBanner />
             </View>
             <View style={styles.container}>
