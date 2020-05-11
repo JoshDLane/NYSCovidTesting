@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     banner_details: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignContent: 'center',
-        marginBottom: -18,
+        alignContent: 'flex-start',
+        marginBottom: -14,
     }
 })
